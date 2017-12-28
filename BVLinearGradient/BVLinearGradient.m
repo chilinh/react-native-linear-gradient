@@ -4,6 +4,17 @@
 #import "BVLinearGradientLayer.h"
 
 @implementation BVLinearGradient
+    
+- (id)initWithFrame:(CGRect)frame
+{
+    if ((self = [super initWithFrame:frame]))
+    {
+        _angleCenter = CGPointMake(0.5, 0.5);
+        _angle = 45.0;
+    }
+    
+    return self;
+}
 
 + (Class)layerClass
 {
@@ -50,6 +61,24 @@
 {
     _locations = locations;
     self.gradientLayer.locations = locations;
+}
+    
+- (void)setUseAngle:(BOOL)useAngle
+{
+    _useAngle = useAngle;
+    self.gradientLayer.useAngle = useAngle;
+}
+    
+- (void)setAngleCenter:(CGPoint)angleCenter
+{
+    _angleCenter = angleCenter;
+    self.gradientLayer.angleCenter = angleCenter;
+}
+    
+- (void)setAngle:(CGFloat)angle
+{
+    _angle = angle;
+    self.gradientLayer.angle = angle;
 }
 
 - (BOOL)respondsToSelector:(SEL)aSelector

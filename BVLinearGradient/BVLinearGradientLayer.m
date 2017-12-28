@@ -14,6 +14,8 @@
     {
         self.needsDisplayOnBoundsChange = YES;
         _needsNewGradient = YES;
+        _angleCenter = CGPointMake(0.5, 0.5);
+        _angle = 45.0;
     }
     
     return self;
@@ -48,7 +50,33 @@
     _endPoint = endPoint;
     [self setNeedsNewGradient];
 }
+    
+- (void)setUseAngle:(BOOL)useAngle
+{
+    _useAngle = useAngle;
+    [self setNeedsDisplay];
+}
 
+- (void)setAngleCenter:(CGPoint)angleCenter
+{
+    _angleCenter = angleCenter;
+    [self setNeedsDisplay];
+}
+
+- (void)setAngle:(CGFloat)angle
+{
+    _angle = angle;
+    [self setNeedsDisplay];
+}
+
+- (CGSize)calculateGradientLocationWithAngle:(CGFloat)angle
+{
+    CGFloat angleRad = +angle - 90 * (M_PI / 180);
+    CGFloat length = sqrt(2);
+    
+    return CGSizeMake(cos(angleRad) * length, sin(angleRad) * length);
+}
+    
 - (void)drawInContext:(CGContextRef)ctx
 {
     if (!_colors)
@@ -84,6 +112,15 @@
         return;
     
     CGPoint start = self.startPoint, end = self.endPoint;
+    
+    if (_useAngle)
+    {
+        CGSize size = [self calculateGradientLocationWithAngle:_angle];
+        start.x = _angleCenter.x - size.width / 2;
+        start.y = _angleCenter.y - size.height / 2;
+        end.x = _angleCenter.x + size.width / 2;
+        end.y = _angleCenter.y + size.height / 2;
+    }
     
     CGContextDrawLinearGradient(ctx, _lastGradient,
                                 CGPointMake(start.x * size.width, start.y * size.height),
