@@ -7,7 +7,10 @@ declare module "react-native-linear-gradient" {
         colors: string[],
         start?: { x: number, y: number },
         end?: { x: number, y: number },
-        locations?: number[]
+        locations?: number[],
+        useAngle?: boolean,
+        angleCenter?: {x: number, y: number},
+        angle?: number
     }
 
     export default class LinearGradient extends React.Component<LinearGradientProps, any> { }
